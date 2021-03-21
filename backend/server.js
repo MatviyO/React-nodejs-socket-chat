@@ -1,22 +1,20 @@
 const express = require('express');
-const useSocket = require('socket.io')
 const app = express();
 const server = require('http').Server(app)
-const io = useSocket(server);
+const io = require('socket.io')(server);
 
 const rooms = new Map([
     ['rooms', []],
     ['messages', []]
 ])
 app.get('/rooms', function (req, res) {
-    console.log('hello')
-    rooms.set('hello', '')
-    res.json('')
+
+    res.json(rooms)
 
 });
 
-io.on('connection', socket => {
-    console.log('socked connected', socket)
+io.on('connection', (socket) => {
+    console.log('socked connected', socket.id)
 })
 
 
