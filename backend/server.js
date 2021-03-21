@@ -1,7 +1,12 @@
 const express = require('express');
 const app = express();
 const server = require('http').Server(app)
-const io = require('socket.io')(server);
+const io = require("socket.io")(server);
+
+const cors = require('cors')
+
+
+app.use(cors())
 
 const rooms = new Map([
     ['rooms', []],
@@ -18,7 +23,7 @@ io.on('connection', (socket) => {
 })
 
 
-app.listen(9999, (err) => {
+app.listen(5000, (err) => {
     if (err) {
         throw Error(err)
     }
