@@ -5,7 +5,6 @@ const io = require("socket.io")(server);
 
 const cors = require('cors')
 
-
 app.use(cors())
 
 const rooms = new Map([
@@ -13,15 +12,12 @@ const rooms = new Map([
     ['messages', []]
 ])
 app.get('/rooms', function (req, res) {
-
     res.json(rooms)
-
 });
 
 io.on('connection', (socket) => {
     console.log('socked connected', socket.id)
 })
-
 
 app.listen(5000, (err) => {
     if (err) {
