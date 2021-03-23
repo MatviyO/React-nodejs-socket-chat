@@ -26,6 +26,9 @@ app.get('/rooms', function (req, res) {
     res.json(rooms)
 });
 
+app.post('/rooms', (req, res) => {
+
+})
 let interval;
 
 io.on("connection", (socket) => {

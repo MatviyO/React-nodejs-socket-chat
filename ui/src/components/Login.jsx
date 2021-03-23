@@ -2,8 +2,7 @@ import React from "react";
 import  socket from '../socket'
 
 function Login() {
-    const name = 'oleh'
-    socket.emit('new user', name)
+
     return(
         <div className="row align-items-center justify-content-center flex-column mt-5">
             <div className="form-group">
