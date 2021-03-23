@@ -1,4 +1,3 @@
-
 const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
@@ -24,9 +23,7 @@ const rooms = new Map([
     ['messages', []]
 ])
 app.get('/rooms', function (req, res) {
-
     res.json(rooms)
-
 });
 let interval;
 
