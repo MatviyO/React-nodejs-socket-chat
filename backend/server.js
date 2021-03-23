@@ -25,6 +25,7 @@ const rooms = new Map([
 app.get('/rooms', function (req, res) {
     res.json(rooms)
 });
+
 let interval;
 
 io.on("connection", (socket) => {
