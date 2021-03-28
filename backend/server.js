@@ -34,7 +34,7 @@ app.post('/rooms', (req, res) => {
             ['message', []]
         ]));
     }
-    res.send();
+    res.json([...rooms.keys()]);
 })
 let interval;
 
