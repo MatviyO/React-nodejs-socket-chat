@@ -7,7 +7,7 @@ const port = 5000;
 const app = express();
 const cors = require('cors')
 
-
+app.use(express.json())
 app.use(cors())
 
 
@@ -23,11 +23,18 @@ const rooms = new Map([
     ['messages', []]
 ])
 app.get('/rooms', function (req, res) {
-    res.json(rooms)
+    res.json(rooms);
 });
 
 app.post('/rooms', (req, res) => {
-
+    const {roomId, userName} = req.body;
+    if (!rooms.has(roomId)) {
+        rooms.set(roomId, new Map([
+            ['users', new Map()],
+            ['message', []]
+        ]));
+    }
+    res.send();
 })
 let interval;
 
