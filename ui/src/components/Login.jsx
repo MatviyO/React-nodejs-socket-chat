@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-function Login() {
+function Login({onLogin}) {
     const [roomId, setRoomId] = useState('')
     const [userName, setUserName] = useState('')
 
@@ -12,7 +12,10 @@ function Login() {
         axios.post('/rooms', {
             roomId,
             userName
+        }).then(() => {
+            onLogin();
         })
+
     }
 
     return(

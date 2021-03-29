@@ -13,7 +13,7 @@ function App() {
     }
     return (
         <div className="container mt-5">
-            <Login />
+            {<Login onLogin={onLogin}/>}
         </div>
     );
 }

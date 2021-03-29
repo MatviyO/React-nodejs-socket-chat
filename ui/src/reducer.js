@@ -5,8 +5,7 @@ export default (state, action) => {
                 ...state,
                 isAuth: action.payload
             }
-            break;
         default:
-            break;
+            return state;
     }
 }
