@@ -11,6 +11,7 @@ function App() {
             payload: true
         })
     }
+    
     return (
         <div className="container mt-5">
             {<Login onLogin={onLogin}/>}
