@@ -5,6 +5,7 @@ export default (state, action) => {
                 ...state,
                 isAuth: action.payload
             }
+
         default:
             return state;
     }
