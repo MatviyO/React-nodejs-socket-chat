@@ -40,6 +40,9 @@ let interval;
 
 io.on("connection", (socket) => {
     console.log("New client connected");
+    socket.on('ROOM:JOIN', (data) => {
+        console.log(data)
+    })
     if (interval) {
         clearInterval(interval);
     }

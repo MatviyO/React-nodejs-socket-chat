@@ -1,24 +1,23 @@
 import React, {useReducer} from 'react'
 import Login from "./components/Login";
 import reducer from "./reducer";
+import socket from './socket'
 
 function App() {
     const [state, dispatch] = useReducer(reducer, {
-        isAuth: false
+        joined: false
     })
     const onLogin = () => {
         dispatch({
-            type: 'IS_AUTH',
+            type: 'JOINED',
             payload: true
         })
     }
-    console.log(state)
-
 
 
     return (
         <div className="container mt-5">
-            {<Login onLogin={onLogin}/>}
+            { !state.joined && <Login onLogin={onLogin}/>}
         </div>
     );
 }

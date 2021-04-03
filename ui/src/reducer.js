@@ -1,6 +1,6 @@
 export default (state, action) => {
     switch (action.type) {
-        case 'IS_AUTH':
+        case 'JOINED':
             return {
                 ...state,
                 isAuth: action.payload

@@ -4,17 +4,18 @@ import axios from "axios";
 function Login({onLogin}) {
     const [roomId, setRoomId] = useState('')
     const [userName, setUserName] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
-    const onEnter = () => {
+    const onEnter = async () => {
         if (!roomId || !userName) {
             return alert('Fields null')
         }
-        axios.post('/rooms', {
+        setIsLoading(true)
+        await axios.post('/rooms', {
             roomId,
             userName
-        }).then(() => {
-            onLogin();
         })
+        onLogin();
 
     }
 
@@ -27,7 +28,9 @@ function Login({onLogin}) {
                 <input type="text" className="form-control" onChange={e => setUserName(e.target.value)} placeholder="Your Name" value={userName}/>
             </div>
             <div className="form-group">
-                <button onClick={onEnter} className="btn btn-outline-primary" >Connect</button>
+                <button disabled={isLoading} onClick={onEnter} className="btn btn-outline-primary" >
+                    { isLoading ? 'Conecting...' :'Connect'}
+                </button>
             </div>
         </div>
     )
