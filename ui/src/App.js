@@ -24,11 +24,9 @@ function App() {
     };
     console.log(state)
     const setUsers = (users) => {
-        console.log(users, 'users')
         dispatch({
             type: 'SET_USERS',
             payload: users
-
         })
     }
 

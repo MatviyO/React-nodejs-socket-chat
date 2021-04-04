@@ -54,15 +54,10 @@ io.on("connection", (socket) => {
     })
 
     socket.on('disconnect', () => {
-        console.log("Client disconnected");
-        console.log(rooms, 'rooms')
         rooms.forEach((value, roomId) => {
-            console.log( value, ' value')
             if ((value.length || value.size) && value.get('users').delete(socket.id)) {
                 const users = [...value.get('users').values()]
-                console.log(users, 'user delte')
                 socket.to(roomId).emit('ROOM:SET_USERS', users)
-
             }
         })
 

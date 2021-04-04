@@ -18,7 +18,6 @@ export default (state, action) => {
                 messages: action.payload
             }
 
-
         default:
             return state;
     }
