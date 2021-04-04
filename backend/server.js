@@ -36,27 +36,28 @@ app.post('/rooms', (req, res) => {
     }
     res.json([...rooms.keys()]);
 })
-let interval;
 
 io.on("connection", (socket) => {
     console.log("New client connected");
-    socket.on('ROOM:JOIN', (data) => {
-        console.log(data)
+    socket.on('ROOM:JOIN', ({roomId, userName}) => {
+        socket.join(roomId)
+        rooms.get(roomId).get('users').set(socket.id, userName)
+        const users = [...rooms.get(roomId).get('users').values()]
+        socket.to(roomId).broadcast.emit('ROOM:JOINED', users)
     })
-    if (interval) {
-        clearInterval(interval);
-    }
-    interval = setInterval(() => getApiAndEmit(socket), 1000);
-    socket.on("disconnect", () => {
+
+    socket.on("disconnected", () => {
         console.log("Client disconnected");
-        clearInterval(interval);
+        rooms.forEach((value, roomId) => {
+            if (value.get('users').delete(socket.id)) {
+                const users = [...value.get('users').values()]
+                socket.to(roomId).broadcast.emit('ROOM:LEAVE', users)
+
+            }
+        })
+
     });
 });
-
-const getApiAndEmit = socket => {
-    const response = new Date();
-    socket.emit("FromAPI", response);
-};
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
 
