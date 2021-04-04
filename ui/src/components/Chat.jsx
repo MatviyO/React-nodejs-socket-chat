@@ -12,7 +12,7 @@ function Chat({users, messages}) {
                     <div className="inbox_people">
                         <div className="headind_srch">
                             <div className="recent_heading">
-                                <h4>Recent</h4>
+                                <h4>Users</h4>
                             </div>
                         </div>
                         <div className="inbox_chat">
@@ -23,8 +23,8 @@ function Chat({users, messages}) {
                                             <div className="chat_img"><img
                                                 src="https://ptetutorials.com/images/user-profile.png" alt="sunil" /></div>
                                             <div className="chat_ib">
-                                                <h5>{name} <span className="chat_date">{Date.now()}</span></h5>
-                                                <p>{users.length}</p>
+                                                <h5>{name} <span className="chat_date">{new Date().toDateString()}</span></h5>
+                                                <p>{index + 1}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -45,12 +45,15 @@ function Chat({users, messages}) {
                                         <span className="time_date"> 11:01 AM    |    June 9</span></div>
                                 </div>
                             </div>
-                            <div className="outgoing_msg">
-                                <div className="sent_msg">
-                                    <p>Test which is a new approach to have all
-                                        solutions</p>
-                                    <span className="time_date"> 11:01 AM    |    June 9</span></div>
-                            </div>
+                            {
+                                messages.map(message =>(
+                                    <div className="outgoing_msg">
+                                        <div className="sent_msg">
+                                            <p>{message.text}</p>
+                                            <span className="time_date"> {message.userName}</span></div>
+                                    </div>
+                                ))
+                            }
                         </div>
                         <div className="type_msg">
                             <div className="input_msg_write">

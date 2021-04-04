@@ -9,6 +9,7 @@ const cors = require('cors')
 
 app.use(express.json())
 app.use(cors())
+app.use(express.urlencoded({extended: true}))
 
 
 const server = http.createServer(app);
@@ -24,11 +25,11 @@ const rooms = new Map([
 ])
 app.get('/rooms/:id', function (req, res) {
 
-    const roomId = req.query.id;
-    const obj = {
+    const {id: roomId} = req.params;
+    const obj =  rooms.has(roomId) ? {
         users: [...rooms.get(roomId).get('users').values()],
         messages: [...rooms.get(roomId).get('messages').values()]
-    }
+    } : { users: [], messages: []}
     res.json(obj);
 });
 
@@ -37,7 +38,7 @@ app.post('/rooms', (req, res) => {
     if (!rooms.has(roomId)) {
         rooms.set(roomId, new Map([
             ['users', new Map()],
-            ['message', []]
+            ['messages', []]
         ]));
     }
     res.json([...rooms.keys()]);
@@ -49,15 +50,18 @@ io.on("connection", (socket) => {
         socket.join(roomId)
         rooms.get(roomId).get('users').set(socket.id, userName)
         const users = [...rooms.get(roomId).get('users').values()]
-        socket.to(roomId).broadcast.emit('ROOM:SET_USERS', users)
+        socket.to(roomId).emit('ROOM:SET_USERS', users)
     })
 
-    socket.on("disconnected", () => {
+    socket.on('disconnect', () => {
         console.log("Client disconnected");
+        console.log(rooms, 'rooms')
         rooms.forEach((value, roomId) => {
-            if (value.get('users').delete(socket.id)) {
+            console.log( value, ' value')
+            if ((value.length || value.size) && value.get('users').delete(socket.id)) {
                 const users = [...value.get('users').values()]
-                socket.to(roomId).broadcast.emit('ROOM:SET_USERS', users)
+                console.log(users, 'user delte')
+                socket.to(roomId).emit('ROOM:SET_USERS', users)
 
             }
         })

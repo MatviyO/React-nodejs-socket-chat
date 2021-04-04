@@ -19,11 +19,12 @@ function App() {
             payload: obj
         })
         socket.emit('ROOM:JOIN', obj);
-        const {data} = axios.get(`/rooms/${obj.roomId}`)
+        const {data} = await axios.get(`/rooms/${obj.roomId}`)
         setUsers(data.users);
     };
     console.log(state)
     const setUsers = (users) => {
+        console.log(users, 'users')
         dispatch({
             type: 'SET_USERS',
             payload: users
@@ -32,7 +33,6 @@ function App() {
     }
 
     useEffect(() => {
-        socket.on('ROOM:JOINED', setUsers)
         socket.on('ROOM:SET_USERS', setUsers)
     }, [])
 
