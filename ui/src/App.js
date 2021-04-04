@@ -5,13 +5,16 @@ import socket from './socket'
 
 function App() {
     const [state, dispatch] = useReducer(reducer, {
-        joined: false
+        joined: false,
+        roomId: null,
+        userName: null
     })
-    const onLogin = () => {
+    const onLogin = (obj) => {
         dispatch({
             type: 'JOINED',
-            payload: true
+            payload: obj
         })
+        socket.emit('ROOM:JOIN', obj);
     }
 
 

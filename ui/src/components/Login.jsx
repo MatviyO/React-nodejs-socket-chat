@@ -10,12 +10,13 @@ function Login({onLogin}) {
         if (!roomId || !userName) {
             return alert('Fields null')
         }
-        setIsLoading(true)
-        await axios.post('/rooms', {
+        const obj = {
             roomId,
             userName
-        })
-        onLogin();
+        }
+        setIsLoading(true)
+        await axios.post('/rooms',obj )
+        onLogin(obj);
 
     }
 
