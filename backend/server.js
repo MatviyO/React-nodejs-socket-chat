@@ -22,8 +22,14 @@ const rooms = new Map([
     ['rooms', []],
     ['messages', []]
 ])
-app.get('/rooms', function (req, res) {
-    res.json(rooms);
+app.get('/rooms/:id', function (req, res) {
+
+    const roomId = req.query.id;
+    const obj = {
+        users: [...rooms.get(roomId).get('users').values()],
+        messages: [...rooms.get(roomId).get('messages').values()]
+    }
+    res.json(obj);
 });
 
 app.post('/rooms', (req, res) => {
@@ -43,7 +49,7 @@ io.on("connection", (socket) => {
         socket.join(roomId)
         rooms.get(roomId).get('users').set(socket.id, userName)
         const users = [...rooms.get(roomId).get('users').values()]
-        socket.to(roomId).broadcast.emit('ROOM:JOINED', users)
+        socket.to(roomId).broadcast.emit('ROOM:SET_USERS', users)
     })
 
     socket.on("disconnected", () => {
@@ -51,7 +57,7 @@ io.on("connection", (socket) => {
         rooms.forEach((value, roomId) => {
             if (value.get('users').delete(socket.id)) {
                 const users = [...value.get('users').values()]
-                socket.to(roomId).broadcast.emit('ROOM:LEAVE', users)
+                socket.to(roomId).broadcast.emit('ROOM:SET_USERS', users)
 
             }
         })

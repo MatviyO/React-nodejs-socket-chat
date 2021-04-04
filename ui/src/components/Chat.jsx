@@ -17,8 +17,8 @@ function Chat({users, messages}) {
                         </div>
                         <div className="inbox_chat">
                             {
-                                users.map((name) => (
-                                    <div className="chat_list active_chat">
+                                users.map((name, index) => (
+                                    <div className="chat_list active_chat" key={name + index}>
                                         <div className="chat_people">
                                             <div className="chat_img"><img
                                                 src="https://ptetutorials.com/images/user-profile.png" alt="sunil" /></div>
