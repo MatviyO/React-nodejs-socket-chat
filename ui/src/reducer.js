@@ -7,6 +7,7 @@ export default (state, action) => {
                 userName: action.payload.userName,
                 roomId: action.payload.roomId
             }
+
         case 'SET_USERS':
             return {
                 ...state,
