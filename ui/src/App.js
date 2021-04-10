@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer} from 'react'
+import React, { useEffect, useReducer } from 'react'
 import Login from "./components/Login";
 import reducer from "./reducer";
 import socket from './socket'
@@ -13,13 +13,13 @@ function App() {
         users: [],
         messages: []
     })
-    const onLogin = async (obj) => {
+    const onLogin = async(obj) => {
         dispatch({
             type: 'JOINED',
             payload: obj
         })
         socket.emit('ROOM:JOIN', obj);
-        const {data} = await axios.get(`/rooms/${obj.roomId}`)
+        const { data } = await axios.get(`/rooms/${obj.roomId}`)
         setUsers(data.users);
     };
     console.log(state)
@@ -32,16 +32,23 @@ function App() {
 
     useEffect(() => {
         socket.on('ROOM:SET_USERS', setUsers)
+        socket.on('ROOM:NEW_MESSAGES', (message) => {
+            dispatch({
+                type: 'NEW_MESSAGE',
+                payload: message
+            });
+        });
     }, [])
 
-    return (
-        <div className="container mt-5">
-            { !state.joined
-                ? <Login onLogin={onLogin}/>
-                    : <Chat {...state} />}
-        </div>
-    );
-}
+    return ( <
+        div className = "container mt-5" > {!state.joined ?
+            < Login onLogin = { onLogin }
+            /> :
+                < Chat {...state }
+            />} <
+            /div>
+        );
+    }
 
 
-export default App;
+    export default App;

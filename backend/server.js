@@ -9,7 +9,7 @@ const cors = require('cors')
 
 app.use(express.json())
 app.use(cors())
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 
 
 const server = http.createServer(app);
@@ -23,18 +23,18 @@ const rooms = new Map([
     ['rooms', []],
     ['messages', []]
 ])
-app.get('/rooms/:id', function (req, res) {
+app.get('/rooms/:id', function(req, res) {
 
-    const {id: roomId} = req.params;
-    const obj =  rooms.has(roomId) ? {
+    const { id: roomId } = req.params;
+    const obj = rooms.has(roomId) ? {
         users: [...rooms.get(roomId).get('users').values()],
         messages: [...rooms.get(roomId).get('messages').values()]
-    } : { users: [], messages: []}
+    } : { users: [], messages: [] }
     res.json(obj);
 });
 
 app.post('/rooms', (req, res) => {
-    const {roomId, userName} = req.body;
+    const { roomId, userName } = req.body;
     if (!rooms.has(roomId)) {
         rooms.set(roomId, new Map([
             ['users', new Map()],
@@ -46,11 +46,20 @@ app.post('/rooms', (req, res) => {
 
 io.on("connection", (socket) => {
     console.log("New client connected");
-    socket.on('ROOM:JOIN', ({roomId, userName}) => {
+    socket.on('ROOM:JOIN', ({ roomId, userName }) => {
         socket.join(roomId)
         rooms.get(roomId).get('users').set(socket.id, userName)
         const users = [...rooms.get(roomId).get('users').values()]
         socket.to(roomId).emit('ROOM:SET_USERS', users)
+    })
+
+    socket.on('ROOM:NEW_MESSAGE', ({ roomId, userName, text }) => {
+        const obj = {
+            userName,
+            text
+        }
+        rooms.get(roomId).get('messages').push(obj);
+        socket.to(roomId).emit('ROOM:NEW_MESSAGE', obj);
     })
 
     socket.on('disconnect', () => {
@@ -64,5 +73,4 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(port, () => console.log(`Listening on port ${port}`));
-
+server.listen(port, () => console.log(`Server has been started on port ${port}`));
