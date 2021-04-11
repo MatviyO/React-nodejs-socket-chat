@@ -20,9 +20,25 @@ function App() {
         })
         socket.emit('ROOM:JOIN', obj);
         const { data } = await axios.get(`/rooms/${obj.roomId}`)
-        setUsers(data.users);
+        dispatch({
+            type: 'SET_DATA',
+            paylaod: data
+        });
     };
+    
     console.log(state)
+
+    const addMessage = ({text, userName}) => {
+        dispatch({
+            type: 'NEW_MESSAGE',
+            payload: {
+                text,
+                userName
+            }
+        })
+    }
+
+
     const setUsers = (users) => {
         dispatch({
             type: 'SET_USERS',
@@ -32,18 +48,16 @@ function App() {
 
     useEffect(() => {
         socket.on('ROOM:SET_USERS', setUsers)
-        socket.on('ROOM:NEW_MESSAGES', (message) => {
-            dispatch({
-                type: 'NEW_MESSAGE',
-                payload: message
-            });
+        socket.on('ROOM:NEW_MESSAGE', (message) => {
+            console.log('new mss ', message)
+            addMessage(message);
         });
     }, [])
 
     return ( <
         div className = "container mt-5" > {!state.joined ?
             <Login onLogin = { onLogin }/> :
-                <Chat {...state }/>} </div>
+                <Chat {...state } onAddMessage={addMessage} />} </div>
         );
     }
 
