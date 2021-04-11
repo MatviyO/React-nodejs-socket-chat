@@ -42,11 +42,8 @@ function App() {
 
     return ( <
         div className = "container mt-5" > {!state.joined ?
-            < Login onLogin = { onLogin }
-            /> :
-                < Chat {...state }
-            />} <
-            /div>
+            <Login onLogin = { onLogin }/> :
+                <Chat {...state }/>} </div>
         );
     }
 

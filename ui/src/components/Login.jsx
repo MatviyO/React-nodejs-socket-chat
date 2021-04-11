@@ -15,26 +15,28 @@ function Login({onLogin}) {
             userName
         }
         setIsLoading(true)
-        await axios.post('/rooms',obj )
+        await axios.post('/rooms', obj)
         onLogin(obj);
 
     }
 
-    return(
+    return (
         <div className="row align-items-center justify-content-center flex-column mt-5">
             <div className="form-group">
-                <input type="text" className="form-control" onChange={e => setRoomId(e.target.value)} placeholder="Room ID" value={roomId}/>
+                <input type="text" className="form-control" onChange={e => setRoomId(e.target.value)}
+                       placeholder="Room ID" value={roomId}/>
             </div>
             <div className="form-group">
-                <input type="text" className="form-control" onChange={e => setUserName(e.target.value)} placeholder="Your Name" value={userName}/>
+                <input type="text" className="form-control" onChange={e => setUserName(e.target.value)}
+                       placeholder="Your Name" value={userName}/>
             </div>
             <div className="form-group">
-                <button disabled={isLoading} onClick={onEnter} className="btn btn-outline-primary" >
-                    { isLoading ? 'Conecting...' :'Connect'}
+                <button disabled={isLoading} onClick={onEnter} className="btn btn-outline-primary">
+                    {isLoading ? 'Conecting...' : 'Connect'}
                 </button>
             </div>
         </div>
     )
 }
 
-export  default  Login
+export default Login
